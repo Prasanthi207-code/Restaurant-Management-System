@@ -4,7 +4,7 @@ Pantry Junction is a modern, responsive restaurant website built with **HTML**, 
 
 Live demo
 
-- If you use VS Code, run the Live Server extension or open `index.html` using a local web server (for example: `http://127.0.0.1:5500/index.html`).
+- Local preview: http://127.0.0.1:5500/index.html
 
 Highlights
 
