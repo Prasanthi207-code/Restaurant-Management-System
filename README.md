@@ -1,49 +1,53 @@
-# Pantry Junction
+# Pantry Junction — Restaurant Management Website
 
-Pantry Junction is a modern restaurant website built using **HTML**, **CSS**, and **JavaScript**.
-The site lets users browse menu items, place online orders, reserve tables, and manage a user profile with a clean responsive design.
+Pantry Junction is a modern, responsive restaurant website built with **HTML**, **CSS**, and **JavaScript**. It simulates a complete front-end experience for a restaurant where visitors can browse the menu, place orders, reserve tables, and manage their profile and order history.
 
-Live demo:  http://127.0.0.1:5500/index.html
----
+Live demo
 
-##  Features
+- If you use VS Code, run the Live Server extension or open `index.html` using a local web server (for example: `http://127.0.0.1:5500/index.html`).
 
-* 🍔 Browse restaurant menu items and dishes
-* 🛒 Online ordering with cart support
-* 📅 Table reservation system
-* 👤 User login and signup flow
-* 👤 Profile page for account details
-* 📱 Responsive layout for desktop, tablet, and mobile
-* 🎨 Modern UI with rich interactions
+Highlights
 
----
+- Clean, mobile-first responsive design with smooth UI interactions.
+- Menu browsing, add-to-cart and order simulation (cart persisted in localStorage).
+- Table reservation flow with date/time selection and booking summary.
+- Authentication pages (signup/login) and a user profile page that shows account details and past orders.
+- Contact page with a contact form and location details.
 
-## Pages Included
+Features
 
-* `index.html` — Home page with featured dish and promotions
-* `about.html` — Restaurant story and values
-* `contact.html` — Contact form and location details
-* `order.html` — Food ordering and cart page
-* `table_booking.html` — Table reservation flow
-* `login.html` — Login page
-* `signup.html` — Signup page
-* `profile.html` — User profile and order history
+- 🍽️ Browse menu categories and individual dishes
+- 🛒 Add to cart, view cart summary, and simulate checkout
+- 📅 Book tables with date/time and party size
+- 🔐 Simple login and signup pages (front-end only)
+- 👤 Profile and order history (stored client-side)
+- 📱 Fully responsive layout for desktop, tablet, and mobile
+- 🎨 Modern UI using CSS and Font Awesome icons
 
----
+Pages included
 
-##  Technologies Used
+- `index.html` — Home page with featured dishes and promotions
+- `about.html` — Restaurant story and values
+- `contact.html` — Contact form and location details
+- `order.html` — Food ordering and cart page
+- `table_booking.html` — Table reservation flow
+- `login.html` — Login page
+- `signup.html` — Signup page
+- `profile.html` — User profile and order history
+- `edit-profile.html` — Edit profile details
+- `tracking.html` — Order tracking simulation
 
-* **HTML5** — Page structure and semantics
-* **CSS3** — Styling, layout, and responsive design
-* **JavaScript** — Interactivity and localStorage-based state
-* **Font Awesome** — Iconography
+Technologies used
 
----
+- HTML5 — Semantic markup
+- CSS3 — Responsive layout and styling
+- JavaScript — Interactivity and localStorage-based state management
+- Font Awesome — Icons
 
-##  Project Structure
+Project structure
 
 ```
-Restaurant-Management-System-1/
+Restaurant-Management-System/
 ├── index.html
 ├── about.html
 ├── contact.html
@@ -54,37 +58,34 @@ Restaurant-Management-System-1/
 ├── profile.html
 ├── edit-profile.html
 ├── tracking.html
+├── assets/ (styles, images, scripts)
 ├── README.md
 ```
 
----
+How to run locally
 
-##  How to Run the Project
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Prasanthi207-code/Restaurant-Management-System.git
+   cd Restaurant-Management-System
+   ```
+2. Open `index.html` in your browser directly, or run a local web server. Recommended (VS Code Live Server):
+   - Install the Live Server extension in VS Code
+   - Right-click `index.html` → "Open with Live Server"
 
-1. Clone or download the repository.
-2. Open the project folder.
-3. Open `index.html` in your browser.
+Notes
 
-> Tip: Use a local web server or VS Code Live Server for best results if assets need to load correctly.
+- This project is a front-end demonstration only. There is no back-end—orders, reservations, and user data are simulated and stored in the browser's localStorage.
+- Replace placeholder images, text, or icons with real assets if you plan to deploy to production.
 
----
+Contributing
 
-## Responsive Design
+Contributions, suggestions and improvements are welcome. If you'd like to contribute, open an issue or submit a pull request describing your changes.
 
-This website is built to work well on:
-
-* Desktop screens
-* Tablets
-* Mobile devices
-
----
-
-## Author
+Author
 
 Developed by **Prasanthi**
 
----
+License
 
-## Support
-
-If you like this project, give the repository a **star ⭐** on GitHub.
+This project is open for personal and educational use. Add a license file if you want to specify licensing terms.
