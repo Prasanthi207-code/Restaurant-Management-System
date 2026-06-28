@@ -73,9 +73,9 @@
     .field input::placeholder,.field textarea::placeholder{color:#555}
     .field input:focus,.field textarea:focus{border-color:var(--gold);background:#141414}
     .pw-wrap{position:relative}
-    .pw-wrap input{padding-right:44px}
-    .pw-toggle{position:absolute;right:13px;top:50%;transform:translateY(-50%);cursor:pointer;color:#555;font-size:14px;transition:color .2s;background:none;border:none;padding:0}
-    .pw-toggle:hover{color:var(--gold)}
+    .pw-wrap input{padding-right:48px}
+    .pw-toggle{position:absolute;right:14px;top:50%;transform:translateY(-50%);cursor:pointer;color:#fff;font-size:18px;transition:color .2s;background:none;border:none;padding:0;display:flex;align-items:center;justify-content:center;line-height:1;width:24px;height:24px}
+    .pw-toggle:hover{color:var(--gold);}
 
     /* Password strength dots */
     .pw-strength{display:flex;gap:5px;margin-top:7px;align-items:center}
@@ -198,7 +198,7 @@
             <label>Password</label>
             <div class="pw-wrap">
               <input type="password" id="password" placeholder="Min. 6 characters" required>
-              <button type="button" class="pw-toggle" aria-label="Toggle password"><i class="fa-solid fa-eye"></i></button>
+              <button type="button" class="pw-toggle" aria-label="Toggle password" title="Show or hide password"><i class="fa-solid fa-eye"></i></button>
             </div>
             <div class="pw-strength">
               <div class="pw-dot" id="dot1"></div>
@@ -212,7 +212,7 @@
             <label>Confirm Password</label>
             <div class="pw-wrap">
               <input type="password" id="confirmPassword" placeholder="Re-enter password" required>
-              <button type="button" class="pw-toggle" aria-label="Toggle password"><i class="fa-solid fa-eye"></i></button>
+              <button type="button" class="pw-toggle" aria-label="Toggle password" title="Show or hide password"><i class="fa-solid fa-eye"></i></button>
             </div>
           </div>
         </div>
@@ -274,21 +274,43 @@
     let users = JSON.parse(localStorage.getItem('users')||'[]');
     if(users.some(u=>u.email===email)){alert('Email already registered. Please login.');return;}
     const memberSince = new Date().toISOString();
-    const avatarOptions = ['👤', '😊', '😃', '😎', '🧑', '👨', '👩', '🧔', '👶', '🤖', '🐱', '🐶', '🦁', '🐯', '🦊', '🐻', '⭐', '🌟', '🎭', '🎪'];
-    const defaultAvatar = avatarOptions[Math.floor(Math.random() * avatarOptions.length)];
-    users.push({name,email,phone,address,password:pw,memberSince});
+    users.push({name,email,phone,address,password:pw,memberSince,avatarImage:defaultAvatarImage});
     localStorage.setItem('users',JSON.stringify(users));
-    localStorage.setItem('currentUser',JSON.stringify({name,email,phone,address,memberSince,avatarEmoji:defaultAvatar}));
+    localStorage.setItem('currentUser',JSON.stringify({
+      name,
+      email,
+      phone,
+      address,
+      memberSince,
+      avatarImage: defaultAvatarImage
+    }));
     alert('Account created successfully! Redirecting to profile…');
     window.location.href = 'profile.html';
   });
+
+  const defaultAvatarImage = 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80';
+
+  function getStoredAvatar() {
+    const user = JSON.parse(localStorage.getItem('currentUser')) || {};
+    return user.avatarImage || user.avatarEmoji || localStorage.getItem('userAvatarImage') || localStorage.getItem('userAvatar');
+  }
+
+  function setAvatarElement(el, avatarValue) {
+    if (!el) return;
+    const isImage = typeof avatarValue === 'string' && (avatarValue.startsWith('data:image') || avatarValue.startsWith('http'));
+    if (isImage) {
+      el.innerHTML = '<img src="' + avatarValue + '" alt="Profile avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" />';
+    } else {
+      el.textContent = avatarValue || '👤';
+    }
+  }
 
   function checkLoginStatus(){
     const u = JSON.parse(localStorage.getItem('currentUser'));
     const pp = document.getElementById('profilePic');
     const mp = document.getElementById('mobileProfileSection');
     if(u){
-      pp.textContent = (u.name||u.email).charAt(0).toUpperCase();
+      setAvatarElement(pp, getStoredAvatar() || u.avatarImage || defaultAvatarImage);
       document.getElementById('loggedOutContent').style.display='none';
       document.getElementById('loggedInContent').style.display='block';
       document.getElementById('userName').textContent = u.name||'User';
@@ -296,7 +318,7 @@
       document.getElementById('userPhone').textContent = u.phone ? 'Phone: ' + u.phone : 'Phone: Not provided';
       mp.innerHTML='<p class="m-user">Hi, '+(u.name||'User')+'</p><p class="m-phone">' + (u.phone ? 'Phone: ' + u.phone : 'Phone: Not provided') + '</p><button class="m-btn" onclick="window.location.href=\'profile.html\'">View Profile</button><button class="m-btn outline" onclick="logout()">Logout</button>';
     }else{
-      pp.innerHTML='&#128100;';
+      setAvatarElement(pp, defaultAvatarImage);
       document.getElementById('loggedOutContent').style.display='block';
       document.getElementById('loggedInContent').style.display='none';
       mp.innerHTML='<button class="m-btn" onclick="window.location.href=\'login.html\'">Login</button><button class="m-btn outline" onclick="window.location.href=\'signup.html\'">Sign Up</button>';

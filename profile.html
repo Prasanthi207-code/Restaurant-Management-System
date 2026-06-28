@@ -598,6 +598,8 @@
     </div>
 
     <script>
+        const defaultAvatarImage = 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80';
+
         function getStoredAvatar() {
             const user = JSON.parse(localStorage.getItem('currentUser')) || {};
             return user.avatarImage || user.avatarEmoji || localStorage.getItem('userAvatarImage') || localStorage.getItem('userAvatar');
@@ -605,7 +607,7 @@
 
         function setAvatarElement(el, avatarValue) {
             if (!el) return;
-            const isImage = typeof avatarValue === 'string' && avatarValue.startsWith('data:image');
+            const isImage = typeof avatarValue === 'string' && (avatarValue.startsWith('data:image') || avatarValue.startsWith('http'));
             if (isImage) {
                 el.innerHTML = `<img src="${avatarValue}" alt="Profile avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" />`;
             } else {
@@ -638,7 +640,7 @@
             const actionButtons = document.getElementById('actionButtons');
 
             if (user) {
-                const avatarValue = getStoredAvatar() || user.avatarEmoji || (user.name || user.email || '👤').charAt(0).toUpperCase();
+                const avatarValue = getStoredAvatar() || user.avatarImage || defaultAvatarImage;
                 setAvatarElement(profilePic, avatarValue);
                 setAvatarElement(profileAvatar, avatarValue);
                 loggedOutContent.style.display = 'none';
@@ -663,8 +665,8 @@
                 loadReservationHistory();
                 loadUserStats();
             } else {
-                setAvatarElement(profilePic, '👤');
-                setAvatarElement(profileAvatar, '👤');
+                setAvatarElement(profilePic, defaultAvatarImage);
+                setAvatarElement(profileAvatar, defaultAvatarImage);
                 loggedOutContent.style.display = 'block';
                 loggedInContent.style.display = 'none';
                 statsSection.style.display = 'none';
@@ -806,16 +808,25 @@
             }
         }
 
-        const avatarOptions = ['👤', '😊', '😃', '😎', '🧑', '👨', '👩', '🧔', '👶', '🤖', '🐱', '🐶', '🦁', '🐯', '🦊', '🐻', '⭐', '🌟', '🎭', '🎪'];
+        const avatarOptions = [
+            'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80',
+            'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=400&q=80',
+            'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=400&q=80',
+            'https://images.unsplash.com/photo-1544723795-3fb6469f5b39?auto=format&fit=crop&w=400&q=80',
+            'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=80',
+            'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=400&q=80'
+        ];
         let selectedAvatar = null;
 
         function openAvatarModal() {
-            const savedAvatar = getStoredAvatar() || '👤';
+            const savedAvatar = getStoredAvatar() || defaultAvatarImage;
             selectedAvatar = savedAvatar;
 
             const modalContent = document.getElementById('avatarOptions');
             modalContent.innerHTML = avatarOptions.map(avatar => `
-                <div class="avatar-option ${avatar === savedAvatar ? 'selected' : ''}" onclick="selectAvatar('${avatar}', event)">${avatar}</div>
+                <div class="avatar-option ${avatar === savedAvatar ? 'selected' : ''}" onclick="selectAvatar('${avatar}', event)">
+                    <img src="${avatar}" alt="Avatar choice">
+                </div>
             `).join('');
 
             const preview = document.getElementById('modalAvatarPreview');
@@ -866,14 +877,12 @@
 
             const user = JSON.parse(localStorage.getItem('currentUser')) || {};
 
-            if (typeof selectedAvatar === 'string' && selectedAvatar.startsWith('data:image')) {
-                // Image uploaded from device
+            if (typeof selectedAvatar === 'string' && (selectedAvatar.startsWith('data:image') || selectedAvatar.startsWith('http'))) {
                 localStorage.setItem('userAvatarImage', selectedAvatar);
                 localStorage.removeItem('userAvatar');
                 user.avatarImage = selectedAvatar;
                 delete user.avatarEmoji;
             } else {
-                // Emoji selection
                 localStorage.setItem('userAvatar', selectedAvatar);
                 localStorage.removeItem('userAvatarImage');
                 user.avatarEmoji = selectedAvatar;

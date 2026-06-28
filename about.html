@@ -204,20 +204,35 @@
     </footer>
 
     <script>
+        const defaultAvatarImage = 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80';
+        function getStoredAvatar() {
+            const user = JSON.parse(localStorage.getItem('currentUser')) || {};
+            return user.avatarImage || user.avatarEmoji || localStorage.getItem('userAvatarImage') || localStorage.getItem('userAvatar');
+        }
+        function setAvatarElement(el, avatarValue) {
+            if (!el) return;
+            const isImage = typeof avatarValue === 'string' && (avatarValue.startsWith('data:image') || avatarValue.startsWith('http'));
+            if (isImage) {
+                el.innerHTML = `<img src="${avatarValue}" alt="Profile avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" />`;
+            } else {
+                el.textContent = avatarValue || '👤';
+            }
+        }
+
         function checkLoginStatus() {
             const user = JSON.parse(localStorage.getItem('currentUser'));
             const profilePic = document.getElementById('profilePic');
             const mobileProfile = document.getElementById('mobileProfileSection');
             if (user) {
-                const letter = (user.name || user.email).charAt(0).toUpperCase();
-                profilePic.textContent = letter;
+                const avatarValue = getStoredAvatar() || user.avatarImage || defaultAvatarImage;
+                setAvatarElement(profilePic, avatarValue);
                 document.getElementById('loggedOutContent').style.display = 'none';
                 document.getElementById('loggedInContent').style.display = 'block';
                 document.getElementById('userName').textContent = user.name || 'User';
                 document.getElementById('userEmail').textContent = user.email || '';
                 mobileProfile.innerHTML = '<p class="m-user">Hi, ' + (user.name || 'User') + '</p><button class="m-btn" onclick="window.location.href=\'profile.html\'">View Profile</button><button class="m-btn" onclick="logout()">Logout</button>';
             } else {
-                profilePic.textContent = '\u{1F464}';
+                setAvatarElement(profilePic, defaultAvatarImage);
                 document.getElementById('loggedOutContent').style.display = 'block';
                 document.getElementById('loggedInContent').style.display = 'none';
                 mobileProfile.innerHTML = '<button class="m-btn" onclick="window.location.href=\'login.html\'">Login</button><button class="m-btn" onclick="window.location.href=\'signup.html\'">Sign Up</button>';
